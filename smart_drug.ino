@@ -1,55 +1,102 @@
 #include <SoftwareSerial.h>
 
-#define BTtx  2
-#define BTrx  3
-#define aMotor  10
+#define aMotor  5
 #define bMotor  6
+#define BTtx	7
+#define BTrx	8
+
+boolean motorStatus = false;
 
 SoftwareSerial BT(BTtx, BTrx);
 
-char power;
-
 void setup()
 {
-	Serial.begin(9600);
 	BT.begin(9600);
+	Serial.begin(9600);
 	pinMode(aMotor, OUTPUT);
 	pinMode(bMotor, OUTPUT);
+	Serial.println("start\n");
 }
 
 void loop()
 {
-	if (Serial.available() > 0)
+	if (BT.available() > 0)
 	{
-		power =Serial.read();
-	}
+		byte data = BT.read();
 
-	switch (power)
-	{
-	case '1':
-		pump(100);
-		break;
-	case '2':
-		pump(200);
-		break;
-	case '3':
-		pump(300);
-		break;
-	}
+		if (data == 1)
+		{
+			pump(90);
+			Serial.println("100ml");
+		}
 
-	power = '0';
-	
+		else if (data == 2)
+		{
+			pump(150);
+			Serial.println("200ml");
+		}
+
+		else if (data == 3)
+		{
+			pump(220);
+			Serial.println("300ml");
+		}
+
+		else if (data == 4)
+		{
+			pump(280);
+			Serial.println("400ml");
+		}
+
+		else if (data == 5)
+		{
+			pump(390);           
+			Serial.println("500ml");
+		}
+
+		else if (data == 6)
+		{
+			pump(470);
+			Serial.println("600ml");
+		}
+
+		else if (data == 7)
+		{
+			pump(570);
+			Serial.println("600ml");
+		}
+
+		else if (data == 8)
+		{
+			pump(650);
+			Serial.println("600ml");
+		}
+
+		else if (data == 9)
+		{
+			pump(750);
+			Serial.println("600ml");
+		}
+		
+		data = 0;
+		delay(1000);
+	}
 }
 
 
-
-void pump(int power)
+void pump(int second)
 {
-	Serial.println("Start\n");
-	digitalWrite(aMotor, HIGH);
-	digitalWrite(bMotor, LOW);
-	delay(power);
-	digitalWrite(aMotor, LOW);
-	digitalWrite(bMotor, LOW);
-	Serial.println("end\n");
+	if (motorStatus == false)
+	{
+		motorStatus = true;
+
+		digitalWrite(aMotor, HIGH);
+		digitalWrite(bMotor, LOW);
+		delay(second);
+
+		digitalWrite(aMotor, LOW);
+		digitalWrite(bMotor, LOW);
+
+		motorStatus = false;
+	}
 }
