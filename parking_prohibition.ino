@@ -5,6 +5,13 @@
 #define BLUE  7
 #define SPEAKER 9
 
+unsigned long previousTime=0;
+unsigned long interval=8000;
+
+long distance=0;
+
+long distanceMeasure();
+
 void setup()
 {
   Serial.begin(9600);
@@ -18,31 +25,31 @@ void setup()
 
 void loop()
 {
+  unsigned long currentTime=millis();
+  if(currentTime-previousTime>=interval)
+  {    
+    previousTime=currentTime;
+    
+    distance=distanceMeasure();
+    while(distance<5)
+    {
+      digitalWrite(RED, HIGH);
+      digitalWrite(GREEN, LOW);
+      digitalWrite(BLUE, LOW);
+      tone(SPEAKER, 261.6); delay(200); noTone(SPEAKER); delay(200);
+      distance=distanceMeasure();
+    }
+  }
+   digitalWrite(GREEN, HIGH);
+   digitalWrite(RED, LOW);
+   digitalWrite(BLUE, LOW); 
+}
+
+long distanceMeasure()
+{
   digitalWrite(TRIG, HIGH);
   delayMicroseconds(10);
   digitalWrite(TRIG, LOW);
-  int distance=pulseIn(ECHO, HIGH)*340/2/10000;
-  Serial.print(distance);
-  Serial.println("cm");
-  delay(100);
-  warning(distance);
-}
-
-
-void warning(int distance)
-{
-  if(distance>5)
-  {
-    digitalWrite(GREEN, HIGH);
-    digitalWrite(RED, LOW);
-    digitalWrite(BLUE, LOW);
-  }
-
-  if(distance<5)
-  {
-    digitalWrite(RED, HIGH);
-    digitalWrite(GREEN, LOW);
-    digitalWrite(BLUE, LOW);
-    tone(SPEAKER, 261.6); delay(200); noTone(SPEAKER); delay(200);
-  }
+  long distance=pulseIn(ECHO, HIGH)*340/2/10000;
+  return distance;
 }
