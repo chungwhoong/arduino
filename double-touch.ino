@@ -12,6 +12,7 @@
 
 Adafruit_SSD1306 display(-1);
 
+unsigned long prevSpeak=0;
 boolean a_motorStatus = false;
 boolean b_motorStatus = false;
 
@@ -49,7 +50,7 @@ void setup()
   mp3_serial.begin(9600);
 
   mp3_player.begin(mp3_serial);
-  delay(1000);
+
   mp3_player.volume(20);  
   pinMode(TOUCH,INPUT);
 }
@@ -58,7 +59,7 @@ void loop()
 { 
   display.setCursor(10,0);
   int touchValue=digitalRead(TOUCH);
-  delay(200);
+
   if(touchValue==HIGH)
   { 
     startTime=millis();
@@ -74,6 +75,7 @@ void loop()
         display.setTextSize(3);
         display.println("1th drug");
         display.display();
+        mp3_player.play(11);
       }
       else
       {
@@ -81,7 +83,9 @@ void loop()
         display.setTextSize(3);
         display.println("2th drug");
         display.display();
+        mp3_player.play(10);
       }
+      count=0;
     }
 
     else
@@ -103,6 +107,11 @@ void loop()
     if(drugType%2==0) data=count+10;
   
     else data=count+20;
+    mp3_player.play(5);
+    display.clearDisplay();
+    display.setTextSize(3);
+    display.println(data);
+    display.display();
 
     switch(data)
       {
@@ -120,53 +129,56 @@ void loop()
         case 25: b_pump_loop(390); break;
         case 26: b_pump_loop(470); break;
       } 
-
-    
   }
 }
 
 
 void speaker(int tabcount)
 {
- switch(tabcount)
+ unsigned long currentTime=millis();
+ if(currentTime-prevSpeak>1000)
+ {
+  prevSpeak=currentTime;
+  switch(tabcount)
   {
     case 1:
-      mp3_player.play(1);
-      delay(1000);
+      mp3_player.play(12); //5ml
+      
       break;
     case 2:
-      mp3_player.play(5);  //5
-      delay(1000);
+      mp3_player.play(4);  //이제 약병에 담습니다.
+      
       break;
      case 3:
-      mp3_player.play(4); //4
-      delay(1000);
+      mp3_player.play(3); //2ml
+      
       break;   
      case 4:
-      mp3_player.play(3); //3
-      delay(1000);
+      mp3_player.play(2); //3mL
+      
       break;  
      case 5:
-      mp3_player.play(2); //2
-      delay(1000);
+      mp3_player.play(1); //4ml
+      
       break;    
      case 6:
-      mp3_player.play(10);// 이제 약병에 담습니다.
-      delay(1000);
+      mp3_player.play(9);// 두번째 물약입니다.
+      
       break; 
      case 7:
-      mp3_player.play(9);  //9
-      delay(1000);
+      mp3_player.play(8);  //6ml
+      
       break; 
      case 8:
-      mp3_player.play(8);
-      delay(1000);
+      mp3_player.play(7); //7ml
+      
       break;
      case 9:
-      mp3_player.play(7);  //7
-      delay(1000);
+      mp3_player.play(6);  //8ml
+      
       break;
   }
+ }
 }
 
 void a_pump_loop(int second)
