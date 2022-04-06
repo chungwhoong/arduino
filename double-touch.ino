@@ -121,6 +121,9 @@ void loop()
         case 14: a_pump_loop(280); break;
         case 15: a_pump_loop(390); break;
         case 16: a_pump_loop(470); break;
+        case 17: a_pump_loop(570); break;
+        case 18: a_pump_loop(650); break;
+        case 19: a_pump_loop(750); break;
     
         case 21: b_pump_loop(90); break;
         case 22: b_pump_loop(150); break;
@@ -128,6 +131,9 @@ void loop()
         case 24: b_pump_loop(280); break;
         case 25: b_pump_loop(390); break;
         case 26: b_pump_loop(470); break;
+        case 27: b_pump_loop(570); break;
+        case 28: b_pump_loop(650); break;
+        case 29: b_pump_loop(750); break;
       } 
   }
 }
