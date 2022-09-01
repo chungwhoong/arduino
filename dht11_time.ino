@@ -1,3 +1,5 @@
+//https://blog.naver.com/icbanq/221794766003  <-참고사이트
+
 #include "DHT.h"
 #include <LiquidCrystal.h>
 #include <ThreeWire.h>  
