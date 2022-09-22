@@ -87,10 +87,8 @@ void loop()
       myFile.print(now.minute(),DEC);
       myFile.print(",");
       myFile.print(float(tmp_avr/cnt));
-      myFile.print(char(223));
-      myFile.print("C, ");
-      myFile.print(int(hum_avr/cnt));
-      myFile.println("%");
+      myFile.print(",");
+      myFile.println(int(hum_avr/cnt));
       myFile.close();
       
       Serial.print(now.month(), DEC);
