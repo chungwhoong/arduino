@@ -2,7 +2,7 @@
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
 #include <DHT11.h>
-#include <SD.h>
+#include <SD.h>   //CS(4),  MOSI(11), MISO(12), SCK(13)
 #include "RTClib.h"
 #include <SoftwareSerial.h>
 #include "PMS.h"
